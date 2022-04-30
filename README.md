@@ -1,2 +1,21 @@
 # kernex-js-client
 Kernex Javascript Client
+
+# Installation
+Npm
+```
+npm install @kernex/client
+```
+
+Yarn
+```
+yarn add @kernex/client
+```
+
+# Getting Started
+```javascript
+import kernexClient from '@kernex/client';
+
+// Replace with your own app endpoint
+const client = kernexClient('https://api.kernex.io/v1');
+```
