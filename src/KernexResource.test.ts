@@ -3,7 +3,7 @@ import KernexResource from './KernexResource';
 describe('KernexResource', () => {
   const BASE_URL = 'https://api.kernex.io/api/v1/testAppId';
   const resourceName = 'blog-posts';
-  const resourceUrl = `${BASE_URL}/${resourceName}`;
+  const resourceUrl = `${BASE_URL}/resource/${resourceName}`;
 
   type BlogPost = {
     title: string;
