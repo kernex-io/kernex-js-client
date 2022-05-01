@@ -5,6 +5,11 @@ export * from './KernexClient';
 export * from './requests';
 export { KernexResource };
 
-export default function kernexClient<Resources extends Record<string, unknown>>(baseUrl: string) {
-  return new KernexClient<Resources>(baseUrl);
+export interface kernexClientOptions {
+  appUrl: string;
+  appApiKey: string;
+}
+
+export default function kernexClient<Resources extends Record<string, unknown>>(options: kernexClientOptions) {
+  return new KernexClient<Resources>(options.appUrl, options.appApiKey);
 }

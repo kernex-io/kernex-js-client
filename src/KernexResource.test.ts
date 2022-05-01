@@ -4,13 +4,14 @@ describe('KernexResource', () => {
   const BASE_URL = 'https://api.kernex.io/api/v1/testAppId';
   const resourceName = 'blog-posts';
   const resourceUrl = `${BASE_URL}/resource/${resourceName}`;
+  const apiKey = 'testApiKey';
 
   type BlogPost = {
     title: string;
     views: number;
   }
 
-  const resource = new KernexResource<BlogPost>(BASE_URL, resourceName);
+  const resource = new KernexResource<BlogPost>(BASE_URL, apiKey, resourceName);
 
   const fetchMockBaseResponse: Omit<Response, 'json'> = {
     body: null,
@@ -49,6 +50,7 @@ describe('KernexResource', () => {
         body: JSON.stringify(blogPost),
         headers: {
           'Content-Type': 'application/json',
+          'X-Api-Key': apiKey,
         },
       });
       expect(response).toStrictEqual(blogPost);
