@@ -1,4 +1,12 @@
 # Changelog
 
+## Version 0
+
+### 0.1.1
+- Add homepage link
+
+### 0.1.0
+- Change resources base url
+
 ### 0.0.0
 - First release
