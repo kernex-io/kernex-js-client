@@ -16,7 +16,7 @@ function getUrl<T>(baseUrl: string, query: Query<T> = {}) {
 class KernexResource<Resource> {
   private readonly resourceUrl: string;
 
-  constructor(private readonly baseUrl: string, resourceName: string) {
+  constructor(private readonly baseUrl: string, readonly apiKey: string, resourceName: string) {
     this.resourceUrl = `${baseUrl}/resource/${resourceName}`;
   }
 
@@ -95,6 +95,7 @@ class KernexResource<Resource> {
       headers: {
         ...init.headers,
         'Content-Type': 'application/json',
+        'X-Api-Key': this.apiKey,
       },
     });
     const data = await response.json();

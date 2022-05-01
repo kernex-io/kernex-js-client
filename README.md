@@ -17,5 +17,8 @@ yarn add @kernex/client
 import kernexClient from '@kernex/client';
 
 // Replace with your own app endpoint
-const client = kernexClient('https://api.kernex.io/v1');
+const client = kernexClient({
+  appUrl: 'https://api.kernex.io/v1',
+  appApiKey: 'your-app-api-key',
+});
 ```

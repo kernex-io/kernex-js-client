@@ -2,6 +2,9 @@
 
 ## Version 0
 
+### 0.2.0
+- Add api keys
+
 ### 0.1.2
 - Fix bad publish
 

@@ -2,7 +2,10 @@ import kernexClient from './index';
 
 describe('kernexClient', () => {
   it('should be defined', () => {
-    const client = kernexClient('baseUrl');
+    const client = kernexClient({
+      appUrl: '',
+      appApiKey: '',
+    });
     expect(client).toBeDefined();
   });
 });
