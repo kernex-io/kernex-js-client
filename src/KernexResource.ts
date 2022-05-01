@@ -17,7 +17,7 @@ class KernexResource<Resource> {
   private readonly resourceUrl: string;
 
   constructor(private readonly baseUrl: string, resourceName: string) {
-    this.resourceUrl = `${baseUrl}/${resourceName}`;
+    this.resourceUrl = `${baseUrl}/resource/${resourceName}`;
   }
 
   /**
