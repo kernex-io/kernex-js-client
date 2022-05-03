@@ -65,7 +65,7 @@ export type Sort<T> = {
 /**
  * A join condition for a query
  */
-export type QueryJoin<T> = {
+export type QueryJoin = {
   /**
    * The name of the resource to join
    */
@@ -75,7 +75,7 @@ export type QueryJoin<T> = {
    * The field name of the relation id. Example: for a blog post with a category relation, and a
    * "categoryId" field, this would be "categoryId".
    */
-  on: keyof T;
+  on: string;
 
   /**
    * The field name where the resource will be added. Example: for a blog post with a category relation, if you
@@ -84,7 +84,7 @@ export type QueryJoin<T> = {
    *   category: { name: 'Category Name Here' } // Blog post category here
    * }
    */
-  as: string & keyof T;
+  as: string;
 }
 
 export interface BaseQuery<T = unknown> {
@@ -92,15 +92,15 @@ export interface BaseQuery<T = unknown> {
   $skip?: number;
   $select?: Array<string | keyof T>;
   $sort?: Sort<T>;
-  $join?: QueryJoin<T>[];
+  $join?: QueryJoin[];
 
   [key: string]: any;
 }
 
-export type Query<T = unknown> = BaseQuery<T> & Partial<Omit<ResourceFilters<T>, QueryReservedParameters>>;
+export type Query<T = unknown> = Partial<BaseQuery<T> & Partial<Omit<ResourceFilters<T>, QueryReservedParameters>>>;
 
-export type ServerQuery<T = unknown> = Omit<Query<T>, '$join'> & {
+export type ServerQuery<T = unknown> = Partial<Omit<Query<T>, '$join'>> & Partial<{
   $client?: {
     $join?: Query<T>['$join'];
   }
-}
+}>

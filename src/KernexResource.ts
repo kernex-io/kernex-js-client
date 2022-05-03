@@ -1,7 +1,7 @@
 import * as qs from 'qs';
-import {Paginated, Query, ServerQuery} from './requests';
+import {Paginated, Query, QueryJoin, ServerQuery} from './requests';
 
-function getQueryString<T>(query: Query<T> = {}) {
+function getQueryString<T>(query: ServerQuery<T> = {}) {
   if (Object.keys(query).length !== 0) {
     return `?${qs.stringify(query)}`;
   }
@@ -12,29 +12,58 @@ function getQueryString<T>(query: Query<T> = {}) {
 function getServerQuery<T>(query: Query<T>): ServerQuery<T> {
   const { $join, ...rest } = query;
 
-  return {
-    ...rest,
-    $client: $join ? { $join } : undefined,
-  };
+  const serverQuery: ServerQuery<T> = { ...rest };
+
+  if ($join) {
+    serverQuery.$client = { $join };
+  }
+
+  return serverQuery;
 }
 
 function getUrl<T>(baseUrl: string, query: Query<T> = {}) {
   return `${baseUrl}${getQueryString(getServerQuery<T>(query))}`;
 }
 
+export type KernexResourceOptions = {
+  $join?: QueryJoin[];
+}
+
 class KernexResource<Resource> {
   private readonly resourceUrl: string;
 
-  constructor(private readonly baseUrl: string, readonly apiKey: string, resourceName: string) {
+  private readonly options: KernexResourceOptions;
+
+  constructor(
+    private readonly baseUrl: string,
+    readonly apiKey: string,
+    resourceName: string,
+    options: KernexResourceOptions = {},
+  ) {
     this.resourceUrl = `${baseUrl}/resource/${resourceName}`;
+    this.options = options;
   }
+
+  getQuery<T = Resource>(query: Query<T> = {}): Query<T> | undefined {
+    const { $join } = this.options;
+
+    if (Object.keys(query).length === 0 && !$join) {
+      return undefined;
+    }
+
+    return {
+      $join,
+      ...query,
+    };
+  };
 
   /**
    * Create a new resource entry
    * @param data
+   * @param query
    */
-  async create(data: Partial<Resource>): Promise<Resource> {
-    return this.fetch(this.resourceUrl, {
+  async create<Response = Resource>(data: Partial<Resource>, query?: Query<Resource>): Promise<Response> {
+    return this.fetch(getUrl(this.resourceUrl, this.getQuery(query)), {
       method: 'POST',
       body: JSON.stringify(data),
     });
@@ -46,7 +75,7 @@ class KernexResource<Resource> {
    * @param query
    */
   async get<GetResource = Resource>(id: string, query?: Query<GetResource>): Promise<GetResource> {
-    return this.fetch<GetResource>(getUrl(`${this.resourceUrl}/${id}`, query), {
+    return this.fetch<GetResource>(getUrl(`${this.resourceUrl}/${id}`, this.getQuery(query)), {
       method: 'GET',
     });
   }
@@ -56,7 +85,7 @@ class KernexResource<Resource> {
    * @param query
    */
   async find<FindResource = Resource>(query?: Query<FindResource>): Promise<Paginated<FindResource>> {
-    return this.fetch(getUrl(this.resourceUrl, query), {
+    return this.fetch(getUrl(this.resourceUrl, this.getQuery(query)), {
       method: 'GET',
     });
   }
@@ -68,7 +97,7 @@ class KernexResource<Resource> {
    * @param query
    */
   async patch(id: string, data: Partial<Resource>, query?: Query<Resource>): Promise<Resource> {
-    return this.fetch(getUrl(`${this.resourceUrl}/${id}`, query), {
+    return this.fetch(getUrl(`${this.resourceUrl}/${id}`, this.getQuery(query)), {
       method: 'PATCH',
       body: JSON.stringify(data),
     });
@@ -81,7 +110,7 @@ class KernexResource<Resource> {
    * @param query
    */
   async update(id: string, data: Partial<Resource>, query?: Query<Resource>): Promise<Resource> {
-    return this.fetch(getUrl(`${this.resourceUrl}/${id}`, query), {
+    return this.fetch(getUrl(`${this.resourceUrl}/${id}`, this.getQuery(query)), {
       method: 'PUT',
       body: JSON.stringify(data),
     });
@@ -93,7 +122,7 @@ class KernexResource<Resource> {
    * @param query
    */
   async remove(id: string, query?: Query<Resource>): Promise<void> {
-    return this.fetch(getUrl(`${this.resourceUrl}/${id}`, query), {
+    return this.fetch(getUrl(`${this.resourceUrl}/${id}`, this.getQuery(query)), {
       method: 'DELETE',
     });
   }
