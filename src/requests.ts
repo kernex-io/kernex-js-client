@@ -60,13 +60,45 @@ export type Sort<T> = {
   [P in keyof T]?: 1 | -1;
 };
 
+/**
+ * A join condition for a query
+ */
+export type QueryJoin<T> = {
+  /**
+   * The name of the resource to join
+   */
+  resource: string;
+
+  /**
+   * The field name of the relation id. Example: for a blog post with a category relation, and a
+   * "categoryId" field, this would be "categoryId".
+   */
+  on: keyof T;
+
+  /**
+   * The field name where the resource will be added. Example: for a blog post with a category relation, if you
+   * set this field to "category", the blog post will look like: {
+   *   // ... blog post fields,
+   *   category: { name: 'Category Name Here' } // Blog post category here
+   * }
+   */
+  as: string & keyof T;
+}
+
 export interface BaseQuery<T = unknown> {
   $limit?: number;
   $skip?: number;
   $select?: Array<string | keyof T>;
   $sort?: Sort<T>;
+  $join?: QueryJoin<T>[];
 
   [key: string]: any;
 }
 
 export type Query<T = unknown> = BaseQuery<T> & ResourceFilters<T>;
+
+export type ServerQuery<T = unknown> = Omit<Query<T>, '$join'> & {
+  $client?: {
+    $join?: Query<T>['$join'];
+  }
+}

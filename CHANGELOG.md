@@ -2,6 +2,9 @@
 
 ## Version 0
 
+### 0.3.0
+- Add support for join queries
+
 ### 0.2.0
 - Add api keys
 

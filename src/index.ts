@@ -1,8 +1,10 @@
 import KernexResource from './KernexResource';
 import KernexClient from './KernexClient';
+import { ResourcesMap } from './resources';
 
 export * from './KernexClient';
 export * from './requests';
+export * from './resources';
 export { KernexResource };
 
 export interface kernexClientOptions {
@@ -10,6 +12,6 @@ export interface kernexClientOptions {
   appApiKey: string;
 }
 
-export default function kernexClient<Resources extends Record<string, unknown>>(options: kernexClientOptions) {
+export default function kernexClient<Resources extends ResourcesMap>(options: kernexClientOptions) {
   return new KernexClient<Resources>(options.appUrl, options.appApiKey);
 }
