@@ -2,6 +2,9 @@
 
 ## Version 0
 
+### 0.4.0
+- Typescript fixes
+
 ### 0.3.0
 - Add support for join queries
 

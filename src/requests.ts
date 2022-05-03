@@ -52,6 +52,8 @@ export interface AdvancedFilter<T, Field extends keyof T> {
  */
 export type FieldFilter<T> = T extends any[] ? (T[number] | T) : T;
 
+type QueryReservedParameters = '$limit' | '$skip' | '$select' | '$sort' | '$join';
+
 export type ResourceFilters<T> = {
   [Field in keyof T]?: FieldFilter<T[Field]> | Partial<AdvancedFilter<T, Field>>
 };
@@ -95,7 +97,7 @@ export interface BaseQuery<T = unknown> {
   [key: string]: any;
 }
 
-export type Query<T = unknown> = BaseQuery<T> & ResourceFilters<T>;
+export type Query<T = unknown> = BaseQuery<T> & Partial<Omit<ResourceFilters<T>, QueryReservedParameters>>;
 
 export type ServerQuery<T = unknown> = Omit<Query<T>, '$join'> & {
   $client?: {

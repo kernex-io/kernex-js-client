@@ -1,5 +1,5 @@
 import KernexResource from './KernexResource';
-import {ResourceDeclaration, ResourcesMap} from './resources';
+import { ResourcesMap } from './resources';
 
 export default class KernexClient<Resources extends ResourcesMap> {
   constructor(readonly baseUrl: string, readonly apiKey: string) {}
@@ -10,7 +10,7 @@ export default class KernexClient<Resources extends ResourcesMap> {
    */
   resource<
     ResourceName extends keyof Resources & string = string,
-    Resource extends ResourceDeclaration = Resources[ResourceName]
+    Resource = Resources[ResourceName]
   >(
     resourceName: ResourceName,
   ) {

@@ -8,4 +8,29 @@ describe('kernexClient', () => {
     });
     expect(client).toBeDefined();
   });
+
+  it('works as expected with typescript types', () => {
+    type BlogPost = {
+      title: string;
+      content: string;
+      views: number;
+    };
+
+    type Note = {
+      title: string;
+      content: string;
+      tags: string[];
+    };
+
+    type Resources = {
+      blogPosts: BlogPost[];
+      notes: Note[];
+    };
+
+    const client = kernexClient<Resources>({
+      appUrl: '',
+      appApiKey: '',
+    });
+    expect(client).toBeDefined();
+  });
 });

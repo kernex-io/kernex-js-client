@@ -2,7 +2,7 @@
   "name": "@kernex/client",
   "homepage": "https://github.com/kernex-io/kernex-js-client",
   "private": false,
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "",
   "main": "./dist/index.js",
   "scripts": {
@@ -23,7 +23,7 @@
     "jest": "^27.3.1",
     "ts-jest": "^27.0.7",
     "tsc-watch": "^4.5.0",
-    "typescript": "^4.4.4"
+    "typescript": "^4.6.4"
   },
   "dependencies": {
     "@babel/runtime": "^7.16.3",
