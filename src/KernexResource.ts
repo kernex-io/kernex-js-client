@@ -22,7 +22,7 @@ function getUrl<T>(baseUrl: string, query: Query<T> = {}) {
   return `${baseUrl}${getQueryString(getServerQuery<T>(query))}`;
 }
 
-class KernexResource<Resource extends Record<string, unknown>> {
+class KernexResource<Resource> {
   private readonly resourceUrl: string;
 
   constructor(private readonly baseUrl: string, readonly apiKey: string, resourceName: string) {
@@ -56,7 +56,7 @@ class KernexResource<Resource extends Record<string, unknown>> {
    * @param query
    */
   async find<FindResource = Resource>(query?: Query<FindResource>): Promise<Paginated<FindResource>> {
-    return this.fetch<Paginated<FindResource>>(getUrl(this.resourceUrl, query), {
+    return this.fetch(getUrl(this.resourceUrl, query), {
       method: 'GET',
     });
   }
