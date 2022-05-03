@@ -32,9 +32,10 @@ class KernexResource<Resource> {
   /**
    * Create a new resource entry
    * @param data
+   * @param query
    */
-  async create(data: Partial<Resource>): Promise<Resource> {
-    return this.fetch(this.resourceUrl, {
+  async create<Response = Resource>(data: Partial<Resource>, query?: Query<Resource>): Promise<Response> {
+    return this.fetch(getUrl(this.resourceUrl, query), {
       method: 'POST',
       body: JSON.stringify(data),
     });
