@@ -1,5 +1,5 @@
 import * as qs from 'qs';
-import { Paginated, Query } from './requests';
+import {Paginated, Query, ServerQuery} from './requests';
 
 function getQueryString<T>(query: Query<T> = {}) {
   if (Object.keys(query).length !== 0) {
@@ -9,11 +9,20 @@ function getQueryString<T>(query: Query<T> = {}) {
   return '';
 }
 
-function getUrl<T>(baseUrl: string, query: Query<T> = {}) {
-  return `${baseUrl}${getQueryString(query)}`;
+function getServerQuery<T>(query: Query<T>): ServerQuery<T> {
+  const { $join, ...rest } = query;
+
+  return {
+    ...rest,
+    $client: $join ? { $join } : undefined,
+  };
 }
 
-class KernexResource<Resource> {
+function getUrl<T>(baseUrl: string, query: Query<T> = {}) {
+  return `${baseUrl}${getQueryString(getServerQuery<T>(query))}`;
+}
+
+class KernexResource<Resource extends Record<string, unknown>> {
   private readonly resourceUrl: string;
 
   constructor(private readonly baseUrl: string, readonly apiKey: string, resourceName: string) {
@@ -36,8 +45,8 @@ class KernexResource<Resource> {
    * @param id
    * @param query
    */
-  async get(id: string, query?: Query<Resource>): Promise<Resource> {
-    return this.fetch(getUrl(`${this.resourceUrl}/${id}`, query), {
+  async get<GetResource = Resource>(id: string, query?: Query<GetResource>): Promise<GetResource> {
+    return this.fetch<GetResource>(getUrl(`${this.resourceUrl}/${id}`, query), {
       method: 'GET',
     });
   }
@@ -46,8 +55,8 @@ class KernexResource<Resource> {
    * Find a list of resource entries
    * @param query
    */
-  async find(query?: Query<Resource>): Promise<Paginated<Resource>> {
-    return this.fetch(getUrl(this.resourceUrl, query), {
+  async find<FindResource = Resource>(query?: Query<FindResource>): Promise<Paginated<FindResource>> {
+    return this.fetch<Paginated<FindResource>>(getUrl(this.resourceUrl, query), {
       method: 'GET',
     });
   }
@@ -89,7 +98,7 @@ class KernexResource<Resource> {
     });
   }
 
-  private async fetch(resourceUrl: string = this.resourceUrl, init: RequestInit = {}) {
+  private async fetch<T>(resourceUrl: string = this.resourceUrl, init: RequestInit = {}): Promise<T> {
     const response = await fetch(resourceUrl, {
       ...init,
       headers: {
@@ -98,7 +107,7 @@ class KernexResource<Resource> {
         'X-Api-Key': this.apiKey,
       },
     });
-    const data = await response.json();
+    const data = await response.json() as T;
 
     if (!response.ok) {
       throw data;

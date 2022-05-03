@@ -1,5 +1,5 @@
 # kernex-js-client
-Kernex Javascript Client
+[kernex.io](https://www.kernex.io) Javascript Client
 
 # Installation
 Npm
