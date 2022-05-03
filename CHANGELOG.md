@@ -2,6 +2,9 @@
 
 ## Version 0
 
+### 0.5.0
+- Fix in query join interface
+
 ### 0.4.0
 - Typescript fixes
 
