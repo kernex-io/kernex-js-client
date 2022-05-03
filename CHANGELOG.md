@@ -4,6 +4,7 @@
 
 ### 0.5.0
 - Fix in query join interface
+- Add feature to add join conditions for all requests
 
 ### 0.4.0
 - Typescript fixes

@@ -32,5 +32,15 @@ describe('kernexClient', () => {
       appApiKey: '',
     });
     expect(client).toBeDefined();
+
+    const resource = client.resource('blogPosts', {
+      $join: [{
+        resource: 'categories',
+        on: 'categoryId',
+        as: 'category',
+      }],
+    });
+
+    expect(resource).toBeDefined();
   });
 });
