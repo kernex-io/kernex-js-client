@@ -40,6 +40,11 @@ export interface AdvancedFilter<T, Field extends keyof T> {
    * Find all records that do not equal the given property value.
    */
   $ne: T[Field];
+
+  /**
+   * Search for a string in the given property.
+   */
+  $search: string;
 }
 
 /**
@@ -93,16 +98,14 @@ export interface BaseQuery<T = unknown> {
   $select?: Array<string | keyof T>;
   $sort?: Sort<T>;
   $join?: QueryJoin[];
-  $search?: string;
 
   [key: string]: any;
 }
 
 export type Query<T = unknown> = Partial<BaseQuery<T> & Partial<Omit<ResourceFilters<T>, QueryReservedParameters>>>;
 
-export type ServerQuery<T = unknown> = Partial<Omit<Query<T>, '$join' | '$search'>> & Partial<{
+export type ServerQuery<T = unknown> = Partial<Omit<Query<T>, '$join'>> & Partial<{
   $client?: {
     $join?: Query<T>['$join'];
-    $search?: Query<T>['$search'];
   }
 }>
