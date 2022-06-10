@@ -2,6 +2,9 @@
 
 ## Version 0
 
+### 0.6.0
+- Add support for text-based search
+
 ### 0.5.0
 - Fix in query join interface
 - Add feature to add join conditions for all requests

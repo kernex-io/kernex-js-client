@@ -93,14 +93,16 @@ export interface BaseQuery<T = unknown> {
   $select?: Array<string | keyof T>;
   $sort?: Sort<T>;
   $join?: QueryJoin[];
+  $search?: string;
 
   [key: string]: any;
 }
 
 export type Query<T = unknown> = Partial<BaseQuery<T> & Partial<Omit<ResourceFilters<T>, QueryReservedParameters>>>;
 
-export type ServerQuery<T = unknown> = Partial<Omit<Query<T>, '$join'>> & Partial<{
+export type ServerQuery<T = unknown> = Partial<Omit<Query<T>, '$join' | '$search'>> & Partial<{
   $client?: {
     $join?: Query<T>['$join'];
+    $search?: Query<T>['$search'];
   }
 }>
