@@ -2,7 +2,7 @@
   "name": "@kernex/client",
   "homepage": "https://github.com/kernex-io/kernex-js-client",
   "private": false,
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "",
   "main": "./dist/index.js",
   "scripts": {

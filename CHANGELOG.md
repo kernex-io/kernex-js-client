@@ -2,6 +2,9 @@
 
 ## Version 0
 
+### 0.7.0
+- Change the way text-search works.
+
 ### 0.6.0
 - Add support for text-based search
 
