@@ -10,12 +10,18 @@ function getQueryString<T>(query: ServerQuery<T> = {}) {
 }
 
 function getServerQuery<T>(query: Query<T>): ServerQuery<T> {
-  const { $join, ...rest } = query;
+  const { $join, $search, ...rest } = query;
 
   const serverQuery: ServerQuery<T> = { ...rest };
 
-  if ($join) {
-    serverQuery.$client = { $join };
+  if ($join || $search) {
+    serverQuery.$client = {};
+    if ($join) {
+      serverQuery.$client.$join = $join;
+    }
+    if ($search) {
+      serverQuery.$client.$search = $search;
+    }
   }
 
   return serverQuery;
