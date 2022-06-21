@@ -2,6 +2,9 @@
 
 ## Version 0
 
+### 0.8.0
+- Use `cross-fetch` instead of `fetch` for browser and server support
+
 ### 0.7.0
 - Change the way text-search works.
 
