@@ -1,4 +1,5 @@
 import * as qs from 'qs';
+import fetch from 'cross-fetch';
 import {Paginated, Query, QueryJoin, ServerQuery} from './requests';
 
 function getQueryString<T>(query: ServerQuery<T> = {}) {

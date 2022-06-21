@@ -2,7 +2,7 @@
   "name": "@kernex/client",
   "homepage": "https://github.com/kernex-io/kernex-js-client",
   "private": false,
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "",
   "main": "./dist/index.js",
   "scripts": {
@@ -27,6 +27,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.16.3",
+    "cross-fetch": "^3.1.5",
     "qs": "^6.10.3"
   },
   "types": "./dist/index.d.ts"
