@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 1 (Beta)
+### 1.0.0-beta1:
+- V1 beta1 release
+
 ## Version 0
 
 ### 0.8.0
